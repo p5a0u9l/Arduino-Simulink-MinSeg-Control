@@ -1,0 +1,287 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>EE547 - HW2</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-01-21"><meta name="DC.source" content="hw2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>EE547 - HW2</h1><!--introduction--><p>prepared by Paul Adams</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Initialization</a></li><li><a href="#2">Problem 1</a></li><li><a href="#3">Part 1.a</a></li><li><a href="#4">Part b</a></li><li><a href="#5">Part c</a></li><li><a href="#6">Part d, e</a></li><li><a href="#7">Note</a></li><li><a href="#8">Simulink model</a></li><li><a href="#9">Part f</a></li><li><a href="#10">Problem 2</a></li><li><a href="#11">Part 2.a</a></li><li><a href="#12">Note</a></li><li><a href="#13">Part 2.b</a></li><li><a href="#14">Part 2.c</a></li><li><a href="#15">Part 3</a></li></ul></div><h2>Initialization<a name="1"></a></h2><pre class="codeinput">close <span class="string">all</span>
+clear
+syms <span class="string">xd</span> <span class="string">x</span> <span class="string">x1d</span> <span class="string">x2d</span> <span class="string">x1</span> <span class="string">x2</span> <span class="string">u</span> <span class="string">y</span> <span class="string">s</span>
+x_ini = [0.05; 0.05];
+dt = 0.01;
+t = 0:dt:10-dt;
+fs = 2000;  <span class="comment">%</span>
+</pre><h2>Problem 1<a name="2"></a></h2><h2>Part 1.a<a name="3"></a></h2><p>Derive the state-space representation of this system</p><pre class="codeinput">x = [x1; x2];
+xd = [x1d; x2d];
+A = [0, 1; 3, -2];
+B = [0; -1];
+C = [0, 1];
+D = 0;
+xd = A*x + B*u;
+y = C*x + D*u;
+fprintf(<span class="string">'x dot is \n'</span>)
+pretty(xd)
+fprintf(<span class="string">'y is \n'</span>)
+pretty(y)
+</pre><pre class="codeoutput">x dot is 
+/        x2       \
+|                 |
+\ 3 x1 - u - 2 x2 /
+
+y is 
+x2
+
+</pre><h2>Part b<a name="4"></a></h2><p>Show the details of inversion of matrix A.</p><pre class="codeinput">A_det = det(A);
+A_ = zeros(2);
+<span class="keyword">if</span> A_det == 0
+    error(<span class="string">'A is not invertible'</span>)
+<span class="keyword">else</span>
+    <span class="comment">% swap element (1,1) with element (2,2)</span>
+    A_(1, 1) = A(2, 2);
+    A_(2, 2) = A(1, 1);
+    <span class="comment">% flip sign of elements (1, 2) and (2, 1)</span>
+    A_(1, 2) = -A(1, 2);
+    A_(2, 1) = -A(2, 1);
+    <span class="comment">% multiply reciprocal of determinant of A by the new A_</span>
+    A_inv = 1/A_det*A_;
+    <span class="comment">% check result</span>
+    <span class="keyword">if</span> ~isequal(A_inv, inv(A))
+        error(<span class="string">'Matrices are not equal!'</span>)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><h2>Part c<a name="5"></a></h2><p>Show the details of deriving the transfer function of this system</p><pre class="codeinput">G = C*inv((s*eye(2) - A))*B + D;
+[num, den] = numden(G);
+num = sym2poly(num);
+den = sym2poly(den);
+</pre><h2>Part d, e<a name="6"></a></h2><p>Create a Simulink model of this system by using the Simulink blocks shown in Figure 1. Please simulate the model created in 1(c) and plot the output signal y when input is a unit step function starting at t = 0, i.e., u(t) = 1, t ? 0. Explain what you discover from the output plot.</p><pre class="codeinput">input_selector = 1; <span class="comment">% select step input</span>
+t = sim(<span class="string">'hw2S.slx'</span>, 5);
+figure
+plotyy(t, u, t, y)
+xlabel(<span class="string">'t [s]'</span>)
+legend({<span class="string">'input'</span>, <span class="string">'output'</span>})
+title(<span class="string">'EE547 - HW2 - Problem 1.e'</span>)
+</pre><img vspace="5" hspace="5" src="hw2_01.png" alt=""> <h2>Note<a name="7"></a></h2><p>The system is unstable</p><h2>Simulink model<a name="8"></a></h2><p><img vspace="5" hspace="5" src="hw2S.png" alt=""> </p><h2>Part f<a name="9"></a></h2><p>Please simulate the model created in 1(c) and plot the output signal y when input is a biased sine function: u(t) = -1 + sin(1000*t).</p><pre class="codeinput">input_selector = 2; <span class="comment">% select sine input</span>
+t = sim(<span class="string">'hw2S.slx'</span>, 5);
+figure
+plotyy(t, u, t, y)
+xlabel(<span class="string">'t [s]'</span>)
+legend({<span class="string">'input'</span>, <span class="string">'output'</span>})
+title(<span class="string">'EE547 - HW2 - Problem 1.f'</span>)
+</pre><img vspace="5" hspace="5" src="hw2_02.png" alt=""> <h2>Problem 2<a name="10"></a></h2><h2>Part 2.a<a name="11"></a></h2><p>Please derive the transfer functions of these two systems.</p><pre class="codeinput">A1 = [0, 1; 0, -3];
+B1 = [0; 1];
+C1 = [1, 0; 0, 1];
+D1 = [0; 0];
+[num1, den1] = ss2tf(A1, B1, C1, D1);
+
+A2 = [-7.5, 2.5; -13.5, 4.5];
+B2 = [2; 4];
+C2 = [-2, 1; 1.5, -0.5];
+D2 = [0; 0];
+[num2, den2] = ss2tf(A2, B2, C2, D2);
+</pre><h2>Note<a name="12"></a></h2><p>The system transfer functions are equivalent within double precision error</p><h2>Part 2.b<a name="13"></a></h2><p>Please plot the outputs of these two systems with respect to step input and impulse input.</p><pre class="codeinput">sys1 = tf({num1(1, :), num1(2, :)}, den1);
+sys2 = tf({num2(1, :), num2(2, :)}, den2);
+figure
+subplot(211), step(sys1)
+subplot(212), impulse(sys1)
+figure
+subplot(211), step(sys2)
+subplot(212), impulse(sys2)
+</pre><img vspace="5" hspace="5" src="hw2_03.png" alt=""> <img vspace="5" hspace="5" src="hw2_04.png" alt=""> <h2>Part 2.c<a name="14"></a></h2><p>Based on the previous two steps, can you conclude these dynamic systems are zero-state equivalent? Yes they are zero-state equivalent. Their transfer functions are approximately equivalent</p><h2>Part 3<a name="15"></a></h2><p>a) Your operation system and MATLAB version. Win 7 64-bit, Matlab R2014b b) Download of MinSeg supporting toolbox. worked using targetinstaller, though had to be on company network to negotiate license server authentication c) Driver installation. Happened automatically d) The problems encountered during installation, for example, failure to select correct driver and compatibility between your operation system and MATLAB. e) Compiling of function blocks. Only works with MPU* source in working directory.</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% EE547 - HW2
+% prepared by Paul Adams
+
+%% Initialization 
+close all
+clear
+syms xd x x1d x2d x1 x2 u y s
+x_ini = [0.05; 0.05];
+dt = 0.01;
+t = 0:dt:10-dt;
+fs = 2000;  % 
+
+%% Problem 1
+
+%% Part 1.a
+% Derive the state-space representation of this system
+x = [x1; x2];
+xd = [x1d; x2d];
+A = [0, 1; 3, -2];
+B = [0; -1];
+C = [0, 1];
+D = 0;
+xd = A*x + B*u;
+y = C*x + D*u;
+fprintf('x dot is \n')
+pretty(xd)
+fprintf('y is \n')
+pretty(y)
+
+%% Part b
+% Show the details of inversion of matrix A.
+A_det = det(A);
+A_ = zeros(2);
+if A_det == 0
+    error('A is not invertible')
+else
+    % swap element (1,1) with element (2,2)
+    A_(1, 1) = A(2, 2);
+    A_(2, 2) = A(1, 1);
+    % flip sign of elements (1, 2) and (2, 1)
+    A_(1, 2) = -A(1, 2);
+    A_(2, 1) = -A(2, 1);
+    % multiply reciprocal of determinant of A by the new A_
+    A_inv = 1/A_det*A_;
+    % check result
+    if ~isequal(A_inv, inv(A))
+        error('Matrices are not equal!')
+    end
+end
+
+%% Part c
+% Show the details of deriving the transfer function of this system
+G = C*inv((s*eye(2) - A))*B + D;
+[num, den] = numden(G);
+num = sym2poly(num);
+den = sym2poly(den);
+
+%% Part d, e
+% Create a Simulink model of this system by using the Simulink blocks shown in Figure 1.
+% Please simulate the model created in 1(c) and plot the output signal y when input is a unit step
+% function starting at t = 0, i.e., u(t) = 1, t ? 0. Explain what you discover from the output plot.
+input_selector = 1; % select step input
+t = sim('hw2S.slx', 5);
+figure
+plotyy(t, u, t, y)
+xlabel('t [s]')
+legend({'input', 'output'})
+title('EE547 - HW2 - Problem 1.e')
+
+%% Note
+% The system is unstable
+
+%% Simulink model
+% 
+% <<hw2S.png>>
+% 
+
+%% Part f
+% Please simulate the model created in 1(c) and plot the output signal y when input is a biased sine
+% function: u(t) = -1 + sin(1000*t).
+input_selector = 2; % select sine input
+t = sim('hw2S.slx', 5);
+figure
+plotyy(t, u, t, y)
+xlabel('t [s]')
+legend({'input', 'output'})
+title('EE547 - HW2 - Problem 1.f')
+
+%% Problem 2
+%% Part 2.a
+% Please derive the transfer functions of these two systems.
+A1 = [0, 1; 0, -3];
+B1 = [0; 1];
+C1 = [1, 0; 0, 1];
+D1 = [0; 0];
+[num1, den1] = ss2tf(A1, B1, C1, D1);
+
+A2 = [-7.5, 2.5; -13.5, 4.5];
+B2 = [2; 4];
+C2 = [-2, 1; 1.5, -0.5];
+D2 = [0; 0];
+[num2, den2] = ss2tf(A2, B2, C2, D2);
+
+%% Note
+% The system transfer functions are equivalent within double precision error
+
+%% Part 2.b
+% Please plot the outputs of these two systems with respect to step input and impulse input.
+sys1 = tf({num1(1, :), num1(2, :)}, den1);
+sys2 = tf({num2(1, :), num2(2, :)}, den2);
+figure
+subplot(211), step(sys1)
+subplot(212), impulse(sys1)
+figure
+subplot(211), step(sys2)
+subplot(212), impulse(sys2)
+
+%% Part 2.c
+% Based on the previous two steps, can you conclude these dynamic systems are zero-state equivalent?
+% Yes they are zero-state equivalent. Their transfer functions are approximately equivalent
+
+%% Part 3
+% a) Your operation system and MATLAB version.
+% Win 7 64-bit, Matlab R2014b
+% b) Download of MinSeg supporting toolbox.
+% worked using targetinstaller, though had to be on company network to
+% negotiate license server authentication
+% c) Driver installation.
+% Happened automatically
+% d) The problems encountered during installation, for example, failure to select correct driver and
+% compatibility between your operation system and MATLAB.
+% e) Compiling of function blocks.
+% Only works with MPU* source in working directory. 
+##### SOURCE END #####
+--></body></html>
