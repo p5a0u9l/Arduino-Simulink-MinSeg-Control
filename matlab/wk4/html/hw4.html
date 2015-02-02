@@ -1,0 +1,299 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>hw4</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-02-01"><meta name="DC.source" content="hw4.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">EE547 - Hw 4</a></li><li><a href="#2">Problem 1</a></li><li><a href="#3">Timing results</a></li><li><a href="#4">Problem 2</a></li><li><a href="#5">Functions</a></li><li><a href="#6">OF_A_SQUARE_MATRIX</a></li><li><a href="#13">G_OF_LAMBDA</a></li><li><a href="#16">INVERSE_LAPLACE_SOLN</a></li></ul></div><h2>EE547 - Hw 4<a name="1"></a></h2><p>prepared by Paul Adams</p><pre class="codeinput"><span class="keyword">function</span> hw4()
+</pre><h2>Problem 1<a name="2"></a></h2><pre class="codeinput">    syms <span class="string">s</span> <span class="string">t</span>
+    A = [14, -75, 190, -224, 96;
+        1, 0, 0, 0, 0;
+        0, 1, 0, 0, 0;
+        0, 0, 1, 0, 0;
+        0, 0, 0, 1, 0];
+
+    <span class="comment">% inverse Laplace Transform solution</span>
+    t1 = timeit(@() inverse_laplace_soln(A));
+    Phi1 = inverse_laplace_soln(A);
+
+    <span class="comment">% matrix exponential solution</span>
+    t2 = timeit(@() expm(A*t));
+    Phi2 = expm(A*t);
+
+    <span class="comment">% Jordan form solution</span>
+    [V, J] = jordan(A);
+    Phi3 = V*expm(J*t)*inv(V);
+    t3 = timeit(@() expm(J*t));
+
+    <span class="comment">% Function of a square matrix</span>
+    t4 = timeit(@() of_a_square_matrix(A));
+    Phi4 = of_a_square_matrix(A);
+</pre><h2>Timing results<a name="3"></a></h2><pre class="codeinput">    fprintf(<span class="string">'Median Jordan form solution:                  %5.3f ms\n'</span>, t3*1000)
+    fprintf(<span class="string">'Median Exponential Matrix solution:           %5.3f ms\n'</span>, t2*1000)
+    fprintf(<span class="string">'Median Inverse Laplace solution:              %5.3f ms\n'</span>, t1*1000)
+    fprintf(<span class="string">'Median Functions of a square matrix solution: %5.3f ms\n'</span>, t4*1000)
+</pre><pre class="codeoutput">Median Jordan form solution:                  6.085 ms
+Median Exponential Matrix solution:           6.163 ms
+Median Inverse Laplace solution:              25.164 ms
+Median Functions of a square matrix solution: 420.134 ms
+</pre><h2>Problem 2<a name="4"></a></h2><pre class="codeinput">    A = [-12 -55 -120 -124 -48;
+        1 0 0 0 0;
+        0 1 0 0 0;
+        0 0 1 0 0;
+        0 0 0 1 0];
+    <span class="comment">% a</span>
+    syms <span class="string">s</span> <span class="string">t</span>
+    disp(<span class="string">'Eigenvalues of A:'</span>)
+    disp(eig(A))
+    disp(<span class="string">'Characteristic polynomial of A:'</span>)
+    disp(det(s*eye(size(A, 1)) - A));
+    <span class="comment">% b</span>
+    [Q, J] = jordan(A);
+    disp(<span class="string">'Similarity matrix of A:'</span>)
+<span class="comment">%     Q = round(1e4*Q)/1e4;</span>
+    disp(Q)
+    disp(<span class="string">'Jordan form of A:'</span>)
+    disp(J)
+    At = A*t;
+    Jt = J*t;
+    f = (Q*expm(Jt))\Q + (Q*Jt)\Q;
+    disp(<span class="string">'f(A):'</span>)
+    disp(f)
+</pre><pre class="codeoutput">Eigenvalues of A:
+  -4.0000 + 0.0000i
+  -3.0000 + 0.0000i
+  -2.0000 + 0.0000i
+  -2.0000 - 0.0000i
+  -1.0000 + 0.0000i
+
+Characteristic polynomial of A:
+s^5 + 12*s^4 + 55*s^3 + 120*s^2 + 124*s + 48
+ 
+Similarity matrix of A:
+   21.3333  -40.5000    0.1667   -8.0000   20.0000
+   -5.3333   13.5000   -0.1667    4.0000   -8.0000
+    1.3333   -4.5000    0.1667   -2.0000    3.0000
+   -0.3333    1.5000   -0.1667    1.0000   -1.0000
+    0.0833   -0.5000    0.1667   -0.5000    0.2500
+
+Jordan form of A:
+    -4     0     0     0     0
+     0    -3     0     0     0
+     0     0    -1     0     0
+     0     0     0    -2     1
+     0     0     0     0    -2
+
+f(A):
+[ exp(4*t) - 1/(4*t),                  0,            0,                  0,                      0]
+[                  0, exp(3*t) - 1/(3*t),            0,                  0,                      0]
+[                  0,                  0, exp(t) - 1/t,                  0,                      0]
+[                  0,                  0,            0, exp(2*t) - 1/(2*t), - t*exp(2*t) - 1/(4*t)]
+[                  0,                  0,            0,                  0,     exp(2*t) - 1/(2*t)]
+ 
+</pre><h2>Functions<a name="5"></a></h2><h2>OF_A_SQUARE_MATRIX<a name="6"></a></h2><pre class="codeinput"><span class="keyword">function</span> x = of_a_square_matrix(A)
+</pre><pre class="codeinput">eigvals = round(1e4*roots(charpoly(A)))/1e4;
+syms <span class="string">lambda</span> <span class="string">t</span>
+</pre><p>compute <img src="hw4_eq18096895394918367257.png" alt="$f$"> on spectrum of <img src="hw4_eq04088523938794390934.png" alt="$\mathbf{A}$"></p><pre class="codeinput">f = symfun(exp(lambda*t), lambda);
+f_ = g_of_lambda(eigvals, f);
+</pre><p>construct <img src="hw4_eq14218007102895009272.png" alt="$h(\lambda) = \beta_0 + \beta_1\lambda + \beta_2\lambda^2 + \beta_3\lambda^3 + \beta_4\lambda^4$"></p><pre class="codeinput">h = symfun(lambda.^(0:4), lambda);
+h_ = g_of_lambda(eigvals, h);
+</pre><p>solve the system with <img src="hw4_eq07616700842600819033.png" alt="$A*\beta = b$"> where <img src="hw4_eq17331442575217596290.png" alt="$\beta$"> are the coefficients of <img src="hw4_eq17641914671717001636.png" alt="$h(\lambda)$"></p><pre class="codeinput">beta = h_\f_;
+</pre><p>solve for <img src="hw4_eq17456371636993483682.png" alt="$h(\mathbf{A}) = f(\mathbf{A})$"></p><pre class="codeinput">x = zeros(5);
+<span class="keyword">for</span> i = 1:size(A, 1)
+    x = x + beta(i)*A^(i-1);
+<span class="keyword">end</span>
+</pre><h2>G_OF_LAMBDA<a name="13"></a></h2><pre class="codeinput"><span class="keyword">function</span> y = g_of_lambda(eigvals, g)
+</pre><pre class="codeinput">syms <span class="string">lambda</span>
+eigvals = sort(eigvals);
+<span class="comment">% get the multiplicies of eigvals</span>
+n = hist(eigvals, max(eigvals));
+idx = 1;
+<span class="keyword">for</span> i = 1:length(n)
+    l = eigvals(i);
+    <span class="comment">% take derivative to the n-1 for eigenvalue with multiplicity n</span>
+    <span class="keyword">for</span> j = 1:n(i)
+        y(idx, :) = diff(g(lambda), lambda, j-1);
+        y(idx, :) = subs(y(idx, :), lambda, eigvals(i));
+        idx = idx + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><h2>INVERSE_LAPLACE_SOLN<a name="16"></a></h2><pre class="codeinput"><span class="keyword">function</span> y = inverse_laplace_soln(A)
+syms <span class="string">s</span> <span class="string">t</span>
+sI_A = s*eye(size(A,1)) - A;
+y = ilaplace(inv(sI_A));
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% EE547 - Hw 4
+% prepared by Paul Adams
+
+function hw4()
+
+%% Problem 1
+
+    syms s t
+    A = [14, -75, 190, -224, 96;
+        1, 0, 0, 0, 0;
+        0, 1, 0, 0, 0;
+        0, 0, 1, 0, 0;
+        0, 0, 0, 1, 0];
+    
+    % inverse Laplace Transform solution
+    t1 = timeit(@() inverse_laplace_soln(A));
+    Phi1 = inverse_laplace_soln(A);
+    
+    % matrix exponential solution
+    t2 = timeit(@() expm(A*t));
+    Phi2 = expm(A*t);
+    
+    % Jordan form solution
+    [V, J] = jordan(A);
+    Phi3 = V*expm(J*t)*inv(V);
+    t3 = timeit(@() expm(J*t));
+    
+    % Function of a square matrix
+    t4 = timeit(@() of_a_square_matrix(A));
+    Phi4 = of_a_square_matrix(A);
+    
+    %% Timing results
+    fprintf('Median Jordan form solution:                  %5.3f ms\n', t3*1000)
+    fprintf('Median Exponential Matrix solution:           %5.3f ms\n', t2*1000)
+    fprintf('Median Inverse Laplace solution:              %5.3f ms\n', t1*1000)
+    fprintf('Median Functions of a square matrix solution: %5.3f ms\n', t4*1000)
+
+%% Problem 2
+    A = [-12 -55 -120 -124 -48;
+        1 0 0 0 0;
+        0 1 0 0 0;
+        0 0 1 0 0;
+        0 0 0 1 0];
+    % a
+    syms s t
+    disp('Eigenvalues of A:')
+    disp(eig(A))
+    disp('Characteristic polynomial of A:')
+    disp(det(s*eye(size(A, 1)) - A));
+    % b
+    [Q, J] = jordan(A);
+    disp('Similarity matrix of A:')
+%     Q = round(1e4*Q)/1e4;
+    disp(Q)
+    disp('Jordan form of A:')
+    disp(J)
+    At = A*t;
+    Jt = J*t;
+    f = (Q*expm(Jt))\Q + (Q*Jt)\Q;
+    disp('f(A):')
+    disp(f)
+    
+
+%% Functions
+%% OF_A_SQUARE_MATRIX
+function x = of_a_square_matrix(A)
+eigvals = round(1e4*roots(charpoly(A)))/1e4;  
+syms lambda t
+%%
+% compute $f$ on spectrum of $\mathbf{A}$
+f = symfun(exp(lambda*t), lambda);
+f_ = g_of_lambda(eigvals, f);
+%%
+% construct $h(\lambda) = \beta_0 + \beta_1\lambda + \beta_2\lambda^2 + \beta_3\lambda^3 + \beta_4\lambda^4$
+h = symfun(lambda.^(0:4), lambda);
+h_ = g_of_lambda(eigvals, h);
+%%
+% solve the system with $A*\beta = b$
+% where $\beta$ are the coefficients of $h(\lambda)$
+beta = h_\f_; 
+%%
+% solve for $h(\mathbf{A}) = f(\mathbf{A})$
+x = zeros(5);
+for i = 1:size(A, 1)
+    x = x + beta(i)*A^(i-1);
+end
+
+%% G_OF_LAMBDA
+function y = g_of_lambda(eigvals, g)
+syms lambda
+eigvals = sort(eigvals);
+% get the multiplicies of eigvals
+n = hist(eigvals, max(eigvals));
+idx = 1; 
+for i = 1:length(n)
+    l = eigvals(i);
+    % take derivative to the n-1 for eigenvalue with multiplicity n
+    for j = 1:n(i)
+        y(idx, :) = diff(g(lambda), lambda, j-1);
+        y(idx, :) = subs(y(idx, :), lambda, eigvals(i));
+        idx = idx + 1;
+    end
+end
+
+%% INVERSE_LAPLACE_SOLN
+function y = inverse_laplace_soln(A)
+syms s t
+sI_A = s*eye(size(A,1)) - A;
+y = ilaplace(inv(sI_A));
+
+##### SOURCE END #####
+--></body></html>
