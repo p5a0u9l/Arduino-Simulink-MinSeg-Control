@@ -155,7 +155,12 @@ f(A):
 </pre><h2>Functions<a name="5"></a></h2><h2>OF_A_SQUARE_MATRIX<a name="6"></a></h2><pre class="codeinput"><span class="keyword">function</span> x = of_a_square_matrix(A)
 </pre><pre class="codeinput">eigvals = round(1e4*roots(charpoly(A)))/1e4;
 syms <span class="string">lambda</span> <span class="string">t</span>
-</pre><p>compute <img src="hw4_eq18096895394918367257.png" alt="$f$"> on spectrum of <img src="hw4_eq04088523938794390934.png" alt="$\mathbf{A}$"></p><pre class="codeinput">f = symfun(exp(lambda*t), lambda);
+</pre><p>compute <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAgAAAAOCAIAAACdNMrBAAAAB3RJTUUH3wIBEy8zXmx0DQAAAPFJ
+REFUGJVVT6vKhEAY/WYUxF3QoNGtwxbZKG4UQbNgEHyMfRa7xeAT+AKWSYJgMY5F2K5l/DaM/2VP
+OnBuHIKIAAAAiEgIGceRcx6GISAiIh7HgYjzPGdZ9nq9bNvW/9vbtnUcpyzLOI7PhEKSJHVdK64r
+rxCiaZphGG63m2maeZ6fiX3fu65jjPV9L4RARF0NGIZhWZZpms/nU61S+AHn/H6/A4CU8hTUFc55
+EAQAQAj5EqZpejweX4Kmaeu6SikZY7/N+rZty7K832/XdT3PO46DUgoA2vV6raqKUhpFke/7f1Vp
+ml4uF0QsikKdVVUfSL+KdjG9WDMAAAAASUVORK5CYII="  alt="$f$"> on spectrum of <img src="hw4_eq04088523938794390934.png" alt="$\mathbf{A}$"></p><pre class="codeinput">f = symfun(exp(lambda*t), lambda);
 f_ = g_of_lambda(eigvals, f);
 </pre><p>construct <img src="hw4_eq14218007102895009272.png" alt="$h(\lambda) = \beta_0 + \beta_1\lambda + \beta_2\lambda^2 + \beta_3\lambda^3 + \beta_4\lambda^4$"></p><pre class="codeinput">h = symfun(lambda.^(0:4), lambda);
 h_ = g_of_lambda(eigvals, h);

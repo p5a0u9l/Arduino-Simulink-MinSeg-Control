@@ -26,5 +26,5 @@ disp(simplify(Phi))
 zir = C*Phi*[1; 1]
 
 zsr = C*int(expm(A*(t - tau))*B, tau, 0, t) 
-
+y = zir + zsr;
 pretty(zir + zsr)
