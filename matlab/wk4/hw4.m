@@ -14,20 +14,20 @@ function hw4()
     
     % inverse Laplace Transform solution
     t1 = timeit(@() inverse_laplace_soln(A));
-    Phi1 = inverse_laplace_soln(A);
+    Phi1 = inverse_laplace_soln(A)
     
     % matrix exponential solution
     t2 = timeit(@() expm(A*t));
-    Phi2 = expm(A*t);
+    Phi2 = expm(A*t)
     
     % Jordan form solution
     [V, J] = jordan(A);
-    Phi3 = V*expm(J*t)*inv(V);
+    Phi3 = V*expm(J*t)*inv(V)
     t3 = timeit(@() expm(J*t));
     
     % Function of a square matrix
     t4 = timeit(@() of_a_square_matrix(A));
-    Phi4 = of_a_square_matrix(A);
+    Phi4 = of_a_square_matrix(A)
     
     %% Timing results
     fprintf('Median Jordan form solution:                  %5.3f ms\n', t3*1000)
