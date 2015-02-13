@@ -1,12 +1,10 @@
 %% EE547 (PMP) Midterm - Winter 2015
 % prepared by Paul Adams
 %
-% Click 
-% <matlab:edit(fullfile(pwd,'midterm.m')) here> 
-% to see the midterm code.
 
 %% Initialization
 function midterm()
+close all
 opengl('save', 'software')
 format shortG
 set(0, 'defaultTextInterpreter', 'latex'); 
@@ -75,6 +73,16 @@ D = double(D);
 %   The degree of the numerators are, at most, equal to the degree of the
 %   denominator. Therefore, the transfer functions are proper rational.
 %%
+% <html> <h3> c) Is the system BIBO stable?</h3> </html>
+%
+% As noted above, the system is proper rational. 
+poles = roots(charpoly(A));     % eig is preferable, but is used below... 
+if all(real(poles) < 0)
+    fprintf('Since the poles (eigenvalues) each have negative real parts, \n the system is BIBO stable.\n')
+else
+    disp('The system is NOT BIBO stable.')
+end
+%%
 % <html> <h3> d) Evaluate the Jordan form of the matrix A 
 % and corresponding transformation matrix Q.</h3> </html>
 %
@@ -109,6 +117,8 @@ Q_ = array2table(Q)
 % $$\Phi(t, t_0) = \mathbf{Q}e^{\mathbf{J}(t-t_0)}\mathbf{Q}^{-1}$$
 % 
 Phi = Q*expm(J*(t))*inv(Q);
+Phi = vpa(Phi, 2)
+% render_latex(['\Phi(t, 0) = ' latex(Phi)], 12, 0.75)
 %%
 % <html> <h3> f) Given the initial state evaluate and plot zero-input responses of
 % the system. </h3> </html>
@@ -117,8 +127,22 @@ x0 = [-0.1; 0.1; -0.2];
 sys = ss(A, B, C, D);
 [y_zir, t, x_zir] = initial(sys, x0, 3);
 %% 
-% <html> <h3> g) Evaluate the complete impulse response of this system. </h3> </html>
+% <html> <h3> g) Evaluate the complete impulse response of this system. Check 
+% if the system is asymptotically stable by solving the Lyapunov equation, where
+% Q is a symmetric positive-definite matrix: </h3> </html>
 %
+Q = eye(size(A, 1));
+% The system is asymptotically stable if the solution to the Lyapunov
+% equation, P, is positive definite. 
+P = lyap(A, Q)
+% Choose the condition that every eigenvalue of P be positive as the
+% condition for the positive-definiteness of P
+if all(eig(P) > 0)
+    disp('P is positive definite, therefore, the system is asymptotically stable')
+else
+    disp('The system is NOT asymptotically stable')
+end
+% compute the impulse response
 [y_zsr, ~, x_zsr] = impulse(sys, 3);
 %%
 % Plots
@@ -165,7 +189,7 @@ G_ = ss2tf(A_, B_, C_, D_);
 if max(max(G - G_)) > numerical_precision
     disp('Systems are not zero-state equivalent')
 else
-    disp('Systems realize the same transfer function, therefore, they are zero-state equivalent.')
+    fprintf('Systems realize the same transfer function, therefore, \n they are zero-state equivalent.\n')
 end
 
 %% Problem 3
@@ -207,6 +231,7 @@ title('Eigenvalues of matrix $\mathbf{A}$')
 % 
 % $\left (\mathbf{A} - \lambda_i \mathbf{I} \right ) q_i = \mathbf{0}$
 % 
+lambda = eig(A);
 J = diag(lambda);
 Q = zeros(size(A));
 for i = 1:length(lambda)
@@ -248,7 +273,7 @@ f2_ = zeros(size(A));
 for i = 1:length(k)
     A_to_the_k = inv(Q)*(diag(lambda.^k(i)))*Q;
     f2 = f2 + A_to_the_k*b(i);
-    f2_ = f2_ + A^k(i); % the direct solution
+    f2_ = f2_ + A^k(i)*b(i); % the direct solution
 end
 array2table(f2)
 %%
