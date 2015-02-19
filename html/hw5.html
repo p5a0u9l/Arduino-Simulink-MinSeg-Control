@@ -1,0 +1,476 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Homework 5 - EE 547 (PMP) - Winter 2015</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-02-18"><meta name="DC.source" content="hw5.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Homework 5 - EE 547 (PMP) - Winter 2015</h1><!--introduction--><p>prepared by Paul Adams</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Initialization</a></li><li><a href="#3">Problem 1 (Controllability and Observability)</a></li><li><a href="#15">Problem 2 (Lyapunov Controllability Test)</a></li></ul></div><h2>Initialization<a name="1"></a></h2><pre class="codeinput"><span class="keyword">function</span> hw5()
+</pre><pre class="codeinput">close <span class="string">all</span>
+digits(3);
+format <span class="string">shortG</span>
+set(0, <span class="string">'defaultTextInterpreter'</span>, <span class="string">'latex'</span>);
+numerical_precision = 1e-9;
+syms <span class="string">s</span> <span class="string">xdot</span> <span class="string">x</span> <span class="string">x_1</span> <span class="string">x_2</span> <span class="string">x_3</span> <span class="string">x_4</span> <span class="string">x_5</span> <span class="string">u_1</span> <span class="string">u_2</span> <span class="string">u_3</span> <span class="string">u_4</span> <span class="string">u_5</span> <span class="string">u</span> <span class="string">t</span> <span class="string">t_0</span>
+</pre><h2>Problem 1 (Controllability and Observability)<a name="3"></a></h2><p> <h3> Setup </h3> </p><pre class="codeinput">x = [x_1; x_2; x_3; x_4; x_5];
+u = [u_1; u_2; u_3; u_4; u_5];
+A = [-9 -31 -51 -40 -12;
+     1 0 0 0 0;
+     0 1 0 0 0;
+     0 0 1 0 0;
+     0 0 0 1 0];
+B = [1; 0; 0; 0; 0];
+C = [95 92 -3 60 -72];
+D = 0;
+render_latex([<span class="string">'\dot{x} = '</span> latex(sym(A)) <span class="string">'\mathbf{x} + '</span> latex(sym(B)) <span class="string">'u'</span>], 12, 1.3)
+render_latex([<span class="string">'y = '</span> latex(sym(B)) <span class="string">'\mathbf{x} + '</span> latex(sym(D)) <span class="string">'u'</span>], 12, 1.3)
+</pre><img vspace="5" hspace="5" src="hw5_01.bmp" alt=""> <img vspace="5" hspace="5" src="hw5_02.bmp" alt=""> <p> <h3> a) Check if the system is asymptotically stable. </h3> </p><p>System is asymptotically stable if <img src="hw5_eq02670703349068869949.png" alt="$\Re{\{\lambda_i\}} < 0$"> for all eigenvalues</p><pre class="codeinput"><span class="keyword">if</span> all(real(eig(A)) &lt; 0)
+    disp(<span class="string">'System is Asymptotically stable'</span>)
+<span class="keyword">else</span>
+    disp(<span class="string">'System is Not Asymptotically stable'</span>)
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">System is Asymptotically stable
+</pre><p> <h3> b) Evaluate the controllability and observability matrices of the system, C and O. </h3> </p><pre class="codeinput">cm = ctrb(A, B);
+om = obsv(A, C);
+render_latex([<span class="string">'\mathcal{C} = '</span> latex(sym(cm))], 12, 1.3)
+render_latex([<span class="string">'\mathcal{O} = '</span> latex(sym(om))], 12, 1.3)
+</pre><img vspace="5" hspace="5" src="hw5_03.bmp" alt=""> <img vspace="5" hspace="5" src="hw5_04.bmp" alt=""> <p> <h3> c) Check if the system is controllable and observable by the ranks of controllability and observability matrices, C and O. </h3> </p><p>The system is controllable and observable if the rank (linearly independant columns) of the controllability and observability matrices are at least equal to n, respectively.</p><pre class="codeinput">n = size(A, 1);
+<span class="keyword">if</span> rank(cm) &gt;= n
+    disp(<span class="string">'System is controllable'</span>)
+<span class="keyword">else</span>
+    disp(<span class="string">'System is not controllable'</span>)
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> rank(om) &gt;= n
+    disp(<span class="string">'System is observable'</span>)
+<span class="keyword">else</span>
+    disp(<span class="string">'System is not observable'</span>)
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">System is controllable
+System is observable
+</pre><p> <h3> d) Find the controllability and observability gramians, Wc and Wo, of this system.</h3> </p><p>Utilize the Matlab function gram</p><pre class="codeinput">sys = ss(A, B, C, D);
+Wc = gram(sys, <span class="string">'c'</span>)
+Wo = gram(sys, <span class="string">'o'</span>)
+</pre><pre class="codeoutput">
+Wc =
+
+     0.072894  -2.9387e-18   -0.0032176   1.4403e-18    0.0006713
+  -2.9387e-18    0.0032176  -8.4337e-19   -0.0006713   1.2181e-18
+   -0.0032176  -8.4337e-19    0.0006713   2.8571e-20  -0.00043981
+   1.4403e-18   -0.0006713   2.8571e-20   0.00043981   1.1539e-18
+    0.0006713   1.2181e-18  -0.00043981   1.1539e-18    0.0013657
+
+
+Wo =
+
+       678.82       1596.8       1227.7        683.3          216
+       1596.8        25447        45270        27386        16930
+       1227.7        45270        92387        62607        32482
+        683.3        27386        62607        51653        25532
+          216        16930        32482        25532        21160
+
+</pre><p> <h3> Please derive input that drives initial state x0 into x1 within 8 seconds.</h3> </p><p>Implement the minimum energy control input, given by</p><p><img src="hw5_eq07881511143650906680.png" alt="$$u(t) = \mathbf{B}^T \exp{(\mathbf{A}^T(t_1 - t))} W_c^{-1} \left[\exp{(\mathbf{A} t_1)}x_0 - x_1 \right ]$$"></p><pre class="codeinput">x0 = [-50; 40; -300; -100; 200];
+x1 = zeros(5, 1);
+t1 = 8;
+syms <span class="string">t</span>
+u = vpa(-B'*expm(A'*(t1-t))*inv(Wc)*(expm(A*t1)*x0 - x1), 4);
+render_latex([<span class="string">'u = '</span> latex(u)], 11, 0.5)
+</pre><img vspace="5" hspace="5" src="hw5_05.bmp" alt=""> <p> <h3> Use lsim function to simulate this controllable system and plot the input and state variable. </h3> </p><pre class="codeinput">tspan = 0:0.01:t1;
+u = eval(subs(u, t, tspan));
+[y, t, x] = lsim(ss(sys), u, tspan, x0);
+
+figure,
+plot(t, x)
+grid <span class="string">on</span>
+title(<span class="string">'State variables'</span>)
+xlabel(<span class="string">'time'</span>)
+legend(<span class="string">'x_1'</span>, <span class="string">'x_2'</span>, <span class="string">'x_3'</span>, <span class="string">'x_4'</span>, <span class="string">'x_5'</span>)
+
+figure
+grid <span class="string">on</span>
+plot(t, u)
+title(<span class="string">'Applied Input'</span>)
+xlabel(<span class="string">'time'</span>)
+</pre><img vspace="5" hspace="5" src="hw5_06.bmp" alt=""> <img vspace="5" hspace="5" src="hw5_07.bmp" alt=""> <h2>Problem 2 (Lyapunov Controllability Test)<a name="15"></a></h2><p> <h3>Setup </h3> </p><pre class="codeinput">x = [x_1; x_2; x_3];
+u = [u_1; u_2; u_3];
+A = [-9 9 -5;
+     7 -9 7;
+     2 2 -6];
+B = eye(3);
+C = eye(3);
+D = zeros(3);
+render_latex([<span class="string">'\dot{x} = '</span> latex(sym(A)) <span class="string">'\mathbf{x} + '</span> latex(sym(B)) <span class="string">'u'</span>], 12, 0.8)
+render_latex([<span class="string">'y = '</span> latex(sym(B)) <span class="string">'\mathbf{x} + '</span> latex(sym(D)) <span class="string">'u'</span>], 12, 0.8)
+</pre><img vspace="5" hspace="5" src="hw5_08.bmp" alt=""> <img vspace="5" hspace="5" src="hw5_09.bmp" alt=""> <p> <h3>Check if the system is asymptotically stable. </h3> </p><p>System is asymptotically stable if <img src="hw5_eq02670703349068869949.png" alt="$\Re{\{\lambda_i\}} < 0$"> for all eigenvalues</p><pre class="codeinput"><span class="keyword">if</span> all(real(eig(A)) &lt; 0)
+    disp(<span class="string">'System is Asymptotically stable'</span>)
+<span class="keyword">else</span>
+    disp(<span class="string">'System is Not Asymptotically stable'</span>)
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">System is Asymptotically stable
+</pre><p> <h3>Check the controllability of this system by Lyapunov test.</h3> </p><p>System is controllable if there does not exist a positive definite solution to the Lyapnuov equation, given by</p><p><img src="hw5_eq11972859786154641784.png" alt="$$\mathbf{A} \mathbf{W_c} + \mathbf{W_c}\mathbf{A}^T = -\mathbf{B}\mathbf{B}^T$$"></p><pre class="codeinput"><span class="keyword">try</span>
+    R = lyapchol(A, B);
+    Wc = R*R';
+    <span class="keyword">if</span> all(eig(Wc)) &gt; 0
+        disp(<span class="string">'There does exist a solution to the Lyapunov equation. The system is controllable.'</span>)
+    <span class="keyword">else</span>
+        disp(<span class="string">'There does not exist a solution to the Lyapunov equation. The system is not controllable.'</span>)
+    <span class="keyword">end</span>
+<span class="keyword">catch</span> err
+    disp(<span class="string">'There does not exist a solution to the Lyapunov equation. The system is not controllable.'</span>)
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">There does exist a solution to the Lyapunov equation. The system is controllable.
+</pre><p> <h3>Derive the controllability and observability matrices of the system.</h3> </p><p>The controllability matrix is defined as</p><p><img src="hw5_eq05575839372541449039.png" alt="$\mathcal{C} = \left[ \mathbf{B}, \mathbf{A}\mathbf{B}, \mathbf{A}^2\mathbf{B}, \cdots, \mathbf{A}^{n-1}\mathbf{B}\right]$"> The obsevability matrix is defined as</p><p><img src="hw5_eq07709879463520323885.png" alt="$\mathcal{C} = \left[ \mathbf{C}, \mathbf{C}\mathbf{A}, \mathbf{C}\mathbf{A}^2, \cdots, \mathbf{C}\mathbf{A}^{n-1}\right]^T$"></p><pre class="codeinput">cm = [];
+<span class="keyword">for</span> n = 1:size(A,1)
+    cm = [cm, A^(n - 1)*B];
+<span class="keyword">end</span>
+</pre><pre class="codeinput">om = [];
+<span class="keyword">for</span> n = 1:size(A,1)
+    om = [om; C*A^(n - 1)];
+<span class="keyword">end</span>
+render_latex([<span class="string">'\mathcal{C} = '</span> latex(sym(cm))], 12, 1)
+render_latex([<span class="string">'\mathcal{O} = '</span> latex(sym(om))], 12, 2)
+</pre><img vspace="5" hspace="5" src="hw5_10.bmp" alt=""> <img vspace="5" hspace="5" src="hw5_11.bmp" alt=""> <p> <h3>Check if the system is controllable and observable by the ranks of C and O.</h3> </p><p>The system is controllable and observable if the rank (linearly independant columns) of the controllability and observability matrices are at least equal to n, respectively.</p><pre class="codeinput">n = size(A, 1);
+<span class="keyword">if</span> rank(cm) &gt;= n
+    disp(<span class="string">'System is controllable'</span>)
+<span class="keyword">else</span>
+    disp(<span class="string">'System is not controllable'</span>)
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> rank(om) &gt;= n
+    disp(<span class="string">'System is observable'</span>)
+<span class="keyword">else</span>
+    disp(<span class="string">'System is not observable'</span>)
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">System is controllable
+System is observable
+</pre><p> <h3> d) Find the controllability and observability gramians, Wc and Wo, of this system.</h3> </p><p>Utilize the Matlab function gram</p><pre class="codeinput">sys = ss(A, B, C, D);
+Wc = gram(sys, <span class="string">'c'</span>)
+Wo = gram(sys, <span class="string">'o'</span>)
+</pre><pre class="codeoutput">
+Wc =
+
+       1.0582         1.45      0.80529
+         1.45        2.119        1.203
+      0.80529        1.203      0.75275
+
+
+Wo =
+
+       1.5385       1.6978      0.73077
+       1.6978       1.9396      0.83791
+      0.73077      0.83791      0.45192
+
+</pre><p> <h3> Please derive input that drives initial state x0 into x1 within 8 seconds.</h3> </p><p>Implement the minimum energy control input, given by</p><p><img src="hw5_eq07881511143650906680.png" alt="$$u(t) = \mathbf{B}^T \exp{(\mathbf{A}^T(t_1 - t))} W_c^{-1} \left[\exp{(\mathbf{A} t_1)}x_0 - x_1 \right ]$$"></p><pre class="codeinput">x0 = [10; -20; 30];
+x1 = zeros(3, 1);
+t1 = 8;
+syms <span class="string">tau</span>
+<span class="comment">% Wc = int(expm(A*(t1-tau))*(B*B')*expm(A'*(t1-tau)), tau, 0, t1);</span>
+t = 0:0.01:t1;
+u = zeros(length(t), n);
+<span class="keyword">for</span> i = 1:length(t)
+    u(i, :) = -B'*expm(A'*(t1-t(i)))*inv(Wc)*(expm(A*t1)*x0 - x1);
+<span class="keyword">end</span>
+</pre><p> <h3> Use lsim function to simulate this controllable system and plot the input and state variable. </h3> </p><pre class="codeinput">[y, tout, x] = lsim(ss(sys), u, t, x0);
+<span class="comment">% lsim(ss(sys), u, t, x0);</span>
+figure,
+plot(tout, x)
+grid <span class="string">on</span>
+title(<span class="string">'State variables'</span>)
+xlabel(<span class="string">'time'</span>)
+legend(<span class="string">'x_1'</span>, <span class="string">'x_2'</span>, <span class="string">'x_3'</span>)
+
+figure
+grid <span class="string">on</span>
+plot(tout, u)
+title(<span class="string">'Applied Input'</span>)
+xlabel(<span class="string">'time'</span>)
+</pre><img vspace="5" hspace="5" src="hw5_12.bmp" alt=""> <img vspace="5" hspace="5" src="hw5_13.bmp" alt=""> <pre class="codeinput">close <span class="string">all</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Homework 5 - EE 547 (PMP) - Winter 2015
+% prepared by Paul Adams
+%
+
+%% Initialization
+function hw5()
+close all
+digits(3);
+format shortG
+set(0, 'defaultTextInterpreter', 'latex'); 
+numerical_precision = 1e-9;
+syms s xdot x x_1 x_2 x_3 x_4 x_5 u_1 u_2 u_3 u_4 u_5 u t t_0
+
+%% Problem 1 (Controllability and Observability)
+%%
+% <html> <h3> Setup </h3> </html>
+x = [x_1; x_2; x_3; x_4; x_5];
+u = [u_1; u_2; u_3; u_4; u_5];
+A = [-9 -31 -51 -40 -12;
+     1 0 0 0 0;
+     0 1 0 0 0;
+     0 0 1 0 0;
+     0 0 0 1 0];
+B = [1; 0; 0; 0; 0];
+C = [95 92 -3 60 -72];
+D = 0;
+render_latex(['\dot{x} = ' latex(sym(A)) '\mathbf{x} + ' latex(sym(B)) 'u'], 12, 1.3)
+render_latex(['y = ' latex(sym(B)) '\mathbf{x} + ' latex(sym(D)) 'u'], 12, 1.3)
+%%
+% <html> <h3> a) Check if the system is asymptotically stable. </h3> </html>
+%%
+% System is asymptotically stable if $\Re{\{\lambda_i\}} < 0$ for all
+% eigenvalues
+if all(real(eig(A)) < 0)
+    disp('System is Asymptotically stable')
+else
+    disp('System is Not Asymptotically stable')
+end
+%%
+% <html> <h3> b) Evaluate the controllability and observability matrices of the system, C and O. </h3> </html>
+cm = ctrb(A, B);
+om = obsv(A, C);
+render_latex(['\mathcal{C} = ' latex(sym(cm))], 12, 1.3)
+render_latex(['\mathcal{O} = ' latex(sym(om))], 12, 1.3)
+%%
+% <html> <h3> c) Check if the system is controllable and observable by the ranks of controllability and observability matrices, C and O. </h3> </html>
+%%
+% The system is controllable and observable if the rank (linearly
+% independant columns) of the controllability and observability matrices
+% are at least equal to n, respectively. 
+n = size(A, 1);
+if rank(cm) >= n
+    disp('System is controllable')
+else
+    disp('System is not controllable')
+end
+
+if rank(om) >= n
+    disp('System is observable')
+else
+    disp('System is not observable')
+end
+%%
+% <html> <h3> d) Find the controllability and observability gramians, Wc and Wo, of this system.</h3> </html>
+%%
+% Utilize the Matlab function gram
+sys = ss(A, B, C, D);
+Wc = gram(sys, 'c')
+Wo = gram(sys, 'o')
+%%
+% <html> <h3> Please derive input that drives initial state x0 into x1 within 8 seconds.</h3> </html>
+%%
+% Implement the minimum energy control input, given by 
+% 
+% $$u(t) = \mathbf{B}^T \exp{(\mathbf{A}^T(t_1 - t))} W_c^{-1} \left[\exp{(\mathbf{A} t_1)}x_0 - x_1 \right ]$$
+% 
+x0 = [-50; 40; -300; -100; 200];
+x1 = zeros(5, 1);
+t1 = 8;
+syms t
+u = vpa(-B'*expm(A'*(t1-t))*inv(Wc)*(expm(A*t1)*x0 - x1), 4);
+render_latex(['u = ' latex(u)], 11, 0.5)
+%%
+% <html> <h3> Use lsim function to simulate this controllable system and plot the input and state variable. </h3> </html>
+tspan = 0:0.01:t1;
+u = eval(subs(u, t, tspan)); 
+[y, t, x] = lsim(ss(sys), u, tspan, x0);
+
+figure, 
+plot(t, x)
+grid on
+title('State variables')
+xlabel('time')
+legend('x_1', 'x_2', 'x_3', 'x_4', 'x_5')
+
+figure
+grid on
+plot(t, u)
+title('Applied Input')
+xlabel('time')
+
+%% Problem 2 (Lyapunov Controllability Test)
+%%
+% <html> <h3>Setup </h3> </html>
+x = [x_1; x_2; x_3];
+u = [u_1; u_2; u_3];
+A = [-9 9 -5;
+     7 -9 7;
+     2 2 -6];
+B = eye(3);
+C = eye(3);
+D = zeros(3);
+render_latex(['\dot{x} = ' latex(sym(A)) '\mathbf{x} + ' latex(sym(B)) 'u'], 12, 0.8)
+render_latex(['y = ' latex(sym(B)) '\mathbf{x} + ' latex(sym(D)) 'u'], 12, 0.8)
+%%
+% <html> <h3>Check if the system is asymptotically stable. </h3> </html>
+%%
+% System is asymptotically stable if $\Re{\{\lambda_i\}} < 0$ for all
+% eigenvalues
+if all(real(eig(A)) < 0)
+    disp('System is Asymptotically stable')
+else
+    disp('System is Not Asymptotically stable')
+end
+%%
+% <html> <h3>Check the controllability of this system by Lyapunov test.</h3> </html>
+%% 
+% System is controllable if there does not exist a positive definite
+% solution to the Lyapnuov equation, given by
+% 
+% $$\mathbf{A} \mathbf{W_c} + \mathbf{W_c}\mathbf{A}^T = -\mathbf{B}\mathbf{B}^T$$
+% 
+try
+    R = lyapchol(A, B);
+    Wc = R*R';
+    if all(eig(Wc)) > 0
+        disp('There does exist a solution to the Lyapunov equation. The system is controllable.')
+    else
+        disp('There does not exist a solution to the Lyapunov equation. The system is not controllable.')
+    end
+catch err
+    disp('There does not exist a solution to the Lyapunov equation. The system is not controllable.')
+end
+%%
+% <html> <h3>Derive the controllability and observability matrices of the system.</h3> </html>
+%% 
+% The controllability matrix is defined as
+%%
+% $\mathcal{C} = \left[ \mathbf{B}, \mathbf{A}\mathbf{B}, \mathbf{A}^2\mathbf{B}, \cdots, \mathbf{A}^{n-1}\mathbf{B}\right]$
+% The obsevability matrix is defined as
+%%
+% $\mathcal{C} = \left[ \mathbf{C}, \mathbf{C}\mathbf{A}, \mathbf{C}\mathbf{A}^2, \cdots, \mathbf{C}\mathbf{A}^{n-1}\right]^T$
+cm = [];
+for n = 1:size(A,1)
+    cm = [cm, A^(n - 1)*B];
+end
+%% 
+om = [];
+for n = 1:size(A,1)
+    om = [om; C*A^(n - 1)];
+end
+render_latex(['\mathcal{C} = ' latex(sym(cm))], 12, 1)
+render_latex(['\mathcal{O} = ' latex(sym(om))], 12, 2)
+%%
+% <html> <h3>Check if the system is controllable and observable by the ranks of C and O.</h3> </html>
+%%
+% The system is controllable and observable if the rank (linearly
+% independant columns) of the controllability and observability matrices
+% are at least equal to n, respectively. 
+n = size(A, 1);
+if rank(cm) >= n
+    disp('System is controllable')
+else
+    disp('System is not controllable')
+end
+
+if rank(om) >= n
+    disp('System is observable')
+else
+    disp('System is not observable')
+end
+%%
+% <html> <h3> d) Find the controllability and observability gramians, Wc and Wo, of this system.</h3> </html>
+%%
+% Utilize the Matlab function gram
+sys = ss(A, B, C, D);
+Wc = gram(sys, 'c')
+Wo = gram(sys, 'o')
+%%
+% <html> <h3> Please derive input that drives initial state x0 into x1 within 8 seconds.</h3> </html>
+%%
+% Implement the minimum energy control input, given by 
+% 
+% $$u(t) = \mathbf{B}^T \exp{(\mathbf{A}^T(t_1 - t))} W_c^{-1} \left[\exp{(\mathbf{A} t_1)}x_0 - x_1 \right ]$$
+% 
+x0 = [10; -20; 30];
+x1 = zeros(3, 1);
+t1 = 8;
+syms tau
+% Wc = int(expm(A*(t1-tau))*(B*B')*expm(A'*(t1-tau)), tau, 0, t1);
+t = 0:0.01:t1;
+u = zeros(length(t), n);
+for i = 1:length(t)
+    u(i, :) = -B'*expm(A'*(t1-t(i)))*inv(Wc)*(expm(A*t1)*x0 - x1);
+end
+%%
+% <html> <h3> Use lsim function to simulate this controllable system and plot the input and state variable. </h3> </html>
+[y, tout, x] = lsim(ss(sys), u, t, x0);
+% lsim(ss(sys), u, t, x0);
+figure, 
+plot(tout, x)
+grid on
+title('State variables')
+xlabel('time')
+legend('x_1', 'x_2', 'x_3')
+
+figure
+grid on
+plot(tout, u)
+title('Applied Input')
+xlabel('time')
+
+%%
+close all
+##### SOURCE END #####
+--></body></html>
