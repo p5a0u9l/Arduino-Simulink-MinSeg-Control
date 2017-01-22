@@ -12,4 +12,4 @@ The [SoC](https://en.wikipedia.org/wiki/System_on_a_chip) is an [Arduino](https:
 a C-compiled model developed in [Simulink](https://www.mathworks.com/products/simulink.html) using hardware drivers
 provided by [Mathworks](https://www.mathworks.com/) and a [Lego-kit](http://minseg.com/) originally developed at Rensselaer.
 
-[![DEMO](https://img.youtube.com/vi/E-jQY5ceVFc/0.jpg)](https://www.youtube.com/watch?v=https://youtu.be/E-jQY5ceVFc)
+[![DEMO](https://img.youtube.com/vi/E-jQY5ceVFc/0.jpg)](https://www.youtube.com/watch?v=E-jQY5ceVFc&feature=youtu.be)
